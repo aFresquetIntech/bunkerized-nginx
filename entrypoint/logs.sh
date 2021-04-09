@@ -19,3 +19,10 @@ touch /var/log/jobs.log
 replace_in_file "/etc/logrotate.conf" "%LOGROTATE_MAXAGE%" "$LOGROTATE_MAXAGE"
 replace_in_file "/etc/logrotate.conf" "%LOGROTATE_MINSIZE%" "$LOGROTATE_MINSIZE"
 echo "$LOGROTATE_CRON /opt/scripts/logrotate.sh > /dev/null 2>&1" >> /etc/crontabs/nginx
+
+# setup rsyslog
+if [ "$REMOTE_SYSLOG" != "" ] ; then
+    echo "local0.* @$REMOTE_SYSLOG;rawFormat" >> /etc/rsyslog.conf
+else
+    echo ""
+fi
